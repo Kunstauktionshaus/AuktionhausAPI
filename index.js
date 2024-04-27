@@ -26,7 +26,13 @@ app.get("/bidder", async (req, res) => {
         filters: filters,
       },
     });
-    return res.json(response.data);
+    const filteredResponse = response.data.map(({ _id, A, F }) => ({
+      _id,
+      A,
+      F,
+    }));
+
+    return res.status(200).json(filteredResponse);
   } catch (error) {
     console.error("Error executing request:", error);
     res.status(500).json({ error: "Error executing request" });
