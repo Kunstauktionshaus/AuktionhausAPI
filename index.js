@@ -38,7 +38,7 @@ app.put("/bidder/:id", async (req, res) => {
   const updatedFields = req.body.fields;
 
   try {
-    const response = await axios.put(
+    await axios.put(
       `${process.env.BIDDERS_TABLE_LINK}/${bidderId}`,
       {
         fields: updatedFields,
@@ -50,7 +50,7 @@ app.put("/bidder/:id", async (req, res) => {
         },
       },
     );
-    res.json(response.data);
+    res.status(200).json({ res: "Record updated" });
   } catch (error) {
     console.error("Error updating record:", error);
     res.status(500).json({ error: "Error updating record" });
