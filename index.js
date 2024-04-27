@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: process.env.FORM_LINK,
+    origin: [process.env.FORM_LINK, "http://localhost:4200"],
   }),
 );
 
