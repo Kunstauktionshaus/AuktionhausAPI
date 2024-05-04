@@ -17,7 +17,7 @@ app.use(
 app.get("/bidder", async (req, res) => {
   try {
     const filters = req.query.filters;
-    const response = await axios.get(process.env.BIDDERS_TABLE_LINK, {
+    const response = await axios.get(process.env.BIDDERS_TABLE_LINK_GR, {
       headers: {
         Authorization: `Bearer ${process.env.API_KEY}`,
         "Content-Type": "application/json",
@@ -26,10 +26,10 @@ app.get("/bidder", async (req, res) => {
         filters: filters,
       },
     });
-    const filteredResponse = response.data.map(({ _id, A, F }) => ({
+    const filteredResponse = response.data.map(({ _id, A, B }) => ({
       _id,
       A,
-      F,
+      B,
     }));
 
     return res.status(200).json(filteredResponse);
@@ -44,8 +44,8 @@ app.put("/bidder/:id", async (req, res) => {
   const updatedFields = req.body.fields;
 
   try {
-    await axios.put(
-      `${process.env.BIDDERS_TABLE_LINK}/${bidderId}`,
+    let response = await axios.put(
+      `${process.env.BIDDERS_TABLE_LINK_GR}/${bidderId}`,
       {
         fields: updatedFields,
       },
@@ -56,7 +56,7 @@ app.put("/bidder/:id", async (req, res) => {
         },
       },
     );
-    res.status(200).json({ res: "Record updated" });
+    res.status(200).json(response.data);
   } catch (error) {
     console.error("Error updating record:", error);
     res.status(500).json({ error: "Error updating record" });
